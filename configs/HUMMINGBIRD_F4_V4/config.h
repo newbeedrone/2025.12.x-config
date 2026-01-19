@@ -83,13 +83,14 @@
 #define USE_PID_DENOM_CHECK
 #define USE_DSHOT_BITBAND
 #define USE_ESCSERIAL
+#define DEFAULT_DSHOT_BITBANG        DSHOT_BITBANG_ON
 
 #define TIMER_PIN_MAPPING \
-    TIMER_PIN_MAP( 0, LED_STRIP_PIN, 2, 0 ) \
-    TIMER_PIN_MAP( 1, MOTOR1_PIN   , 1, 1 ) \
-    TIMER_PIN_MAP( 2, MOTOR2_PIN   , 1, 1 ) \
-    TIMER_PIN_MAP( 3, MOTOR3_PIN   , 1, 1 ) \
-    TIMER_PIN_MAP( 4, MOTOR4_PIN   , 1, 1 ) 
+    TIMER_PIN_MAP( 0, MOTOR1_PIN    ,   1, 0) \
+    TIMER_PIN_MAP( 1, MOTOR2_PIN    ,   1, 0) \
+    TIMER_PIN_MAP( 2, MOTOR3_PIN    ,   1, 0) \
+    TIMER_PIN_MAP( 3, MOTOR4_PIN    ,   1, 0) \
+    TIMER_PIN_MAP( 4, LED_STRIP_PIN ,   2, 0)
 
 #define ADC_INSTANCE        ADC1    
 #define ADC1_DMA_OPT        0
