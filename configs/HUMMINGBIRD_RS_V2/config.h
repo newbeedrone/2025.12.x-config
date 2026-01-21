@@ -90,11 +90,11 @@
 #define ADC1_DMA_OPT        0
 
 #define UART2_TX_DMA_OPT 8
-#define UART2_RX_DMA_OPT DMA_OPT_UNUSED
+#define UART2_RX_DMA_OPT 9
 #define UART4_TX_DMA_OPT 10
-#define UART4_RX_DMA_OPT DMA_OPT_UNUSED
+#define UART4_RX_DMA_OPT 11
 #define UART5_TX_DMA_OPT 12
-#define UART5_RX_DMA_OPT DMA_OPT_UNUSED
+#define UART5_RX_DMA_OPT 13
 
 #define GYRO_1_SPI_INSTANCE             SPI2
 #define GYRO_1_ALIGN                    CW90_DEG
