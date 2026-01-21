@@ -72,8 +72,8 @@
 #define SPI2_SDI_PIN         PB14
 #define SPI2_SDO_PIN         PB15
 
-#define ADC_VBAT_PIN         PA2
-#define ADC_CURR_PIN         PA3
+#define ADC_VBAT_PIN         PB0
+#define ADC_CURR_PIN         PB1
 #define MAX7456_SPI_CS_PIN   PA4
 #define RTC6705_CS_PIN       PC15
 #define GYRO_1_EXTI_PIN      PC13
@@ -89,11 +89,21 @@
 #define ADC_INSTANCE        ADC1    
 #define ADC1_DMA_OPT        0
 
-#define DEFAULT_RX_FEATURE              FEATURE_RX_SPI
+#define UART2_TX_DMA_OPT 8
+#define UART2_RX_DMA_OPT DMA_OPT_UNUSED
+#define UART4_TX_DMA_OPT 10
+#define UART4_RX_DMA_OPT DMA_OPT_UNUSED
+#define UART5_TX_DMA_OPT 12
+#define UART5_RX_DMA_OPT DMA_OPT_UNUSED
+
 #define GYRO_1_SPI_INSTANCE             SPI2
 #define GYRO_1_ALIGN                    CW90_DEG
 #define MAX7456_SPI_INSTANCE            SPI1
 #define RTC6705_SPI_INSTANCE            SPI1
+#define USE_SPI_DMA_ENABLE_LATE
+#define SERIALRX_UART                   SERIAL_PORT_UART4
+#define SERIALRX_PROVIDER               SERIALRX_CRSF
+#define DEFAULT_RX_FEATURE              FEATURE_RX_SERIAL
 #define RTC6705_DYNAMIC_POWER_CTRL // For External VTx Power Controller
 #define CMS_SKIP_EMPTY_VTX_TABLE_ENTRIES
 #define DEFAULT_VOLTAGE_METER_SCALE     112
