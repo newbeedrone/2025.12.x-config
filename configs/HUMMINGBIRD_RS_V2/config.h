@@ -76,7 +76,7 @@
 #define ADC_CURR_PIN         PB1
 #define MAX7456_SPI_CS_PIN   PA4
 #define RTC6705_CS_PIN       PC15
-#define GYRO_1_EXTI_PIN      PC13
+#define GYRO_1_EXTI_PIN      PA8
 #define GYRO_1_CS_PIN        PB12
 
 #define TIMER_PIN_MAPPING \
@@ -88,13 +88,6 @@
 
 #define ADC_INSTANCE        ADC1    
 #define ADC1_DMA_OPT        0
-
-#define UART2_TX_DMA_OPT 8
-#define UART2_RX_DMA_OPT 9
-#define UART4_TX_DMA_OPT 10
-#define UART4_RX_DMA_OPT 11
-#define UART5_TX_DMA_OPT 12
-#define UART5_RX_DMA_OPT 13
 
 #define GYRO_1_SPI_INSTANCE             SPI2
 #define GYRO_1_ALIGN                    CW90_DEG
