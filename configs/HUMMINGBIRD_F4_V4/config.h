@@ -87,16 +87,16 @@
 
 #define TIMER_PIN_MAPPING \
     TIMER_PIN_MAP( 0, MOTOR1_PIN    ,   1, 0) \
-    TIMER_PIN_MAP( 1, MOTOR2_PIN    ,   1, 0) \
+    TIMER_PIN_MAP( 1, MOTOR2_PIN    ,   2, 0) \
     TIMER_PIN_MAP( 2, MOTOR3_PIN    ,   1, 0) \
     TIMER_PIN_MAP( 3, MOTOR4_PIN    ,   1, 0) \
-    TIMER_PIN_MAP( 4, LED_STRIP_PIN ,   2, 0)
+    TIMER_PIN_MAP( 4, LED_STRIP_PIN ,   1, 0)
 
 #define ADC_INSTANCE        ADC1    
 #define ADC1_DMA_OPT        0
 
 #define RX_SPI_INSTANCE                 SPI3
-#define RX_EXPRESSLRS_TIMER_INSTANCE    TIM5
+#define RX_EXPRESSLRS_TIMER_INSTANCE    TIM3
 #define RX_SPI_LED_INVERTED
 #define RX_SPI_PROTOCOL                 EXPRESSLRS
 #define RX_SPI_DEFAULT_PROTOCOL         RX_SPI_EXPRESSLRS
