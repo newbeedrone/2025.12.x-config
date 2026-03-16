@@ -196,6 +196,8 @@ void targetConfiguration(void) {
     /* PID Tuning -> Filter Setting */
     dynNotchConfigMutable()->dyn_notch_count = 1;
     dynNotchConfigMutable()->dyn_notch_q = 500;
+    gyroConfigMutable()->gyro_lpf1_static_hz  = 0;
+    gyroConfigMutable()->gyro_lpf1_dyn_min_hz = 0;
 
     /* Motors */
     motorConfigMutable()->motorIdle = 800;
@@ -244,18 +246,23 @@ void targetConfiguration(void) {
     strcpy(pilotConfigMutable()->craftName, USBD_PRODUCT_STRING);
 
     /* PID Tuning -> PID Profile Settings */
+    pidProfilesMutable(0)->iterm_relax_cutoff = 45;
     pidProfilesMutable(0)->vbat_sag_compensation = 100;
     pidProfilesMutable(0)->pid[PID_PITCH].P = 72;
-    pidProfilesMutable(0)->pid[PID_PITCH].I = 129;
+    pidProfilesMutable(0)->pid[PID_PITCH].I = 0;
     pidProfilesMutable(0)->pid[PID_PITCH].D = 47;
     pidProfilesMutable(0)->pid[PID_PITCH].F = 57;
     pidProfilesMutable(0)->pid[PID_ROLL].P = 63;
-    pidProfilesMutable(0)->pid[PID_ROLL].I = 112;
+    pidProfilesMutable(0)->pid[PID_ROLL].I = 0;
     pidProfilesMutable(0)->pid[PID_ROLL].D = 42;
     pidProfilesMutable(0)->pid[PID_ROLL].F = 50;
     pidProfilesMutable(0)->pid[PID_YAW].P = 130;
     pidProfilesMutable(0)->pid[PID_YAW].I = 60;
     pidProfilesMutable(0)->pid[PID_YAW].F = 0;
+    pidProfilesMutable(0)->d_max[FD_ROLL] = 56;
+    pidProfilesMutable(0)->d_max[FD_PITCH] = 64;
+    pidProfilesMutable(0)->d_max_gain = 0;
+    pidProfilesMutable(0)->d_max_advance = 35;
     pidProfilesMutable(0)->thrustLinearization = 20;
     pidProfilesMutable(0)->simplified_pids_mode = PID_SIMPLIFIED_TUNING_RP;
     pidProfilesMutable(0)->simplified_master_multiplier = 140;
