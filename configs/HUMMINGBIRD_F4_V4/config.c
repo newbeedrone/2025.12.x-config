@@ -208,10 +208,12 @@
      /* Configuration -> Dshot Beacon Configuration */
      beeperConfigMutable()->dshotBeaconTone = DSHOT_CMD_BEACON2;
  
-     /* Motors -> Mixer */
+    /* Motors -> Mixer */
      mixerConfigMutable()->yaw_motors_reversed = true;
+     mixerConfigMutable()->crashflip_rate = 30;
+     mixerConfigMutable()->crashflip_auto_rearm = true;
  
-     /* OSD */
+    /* OSD */
      osdWarnSetState(OSD_WARNING_BATTERY_NOT_FULL, false);
      osdWarnSetState(OSD_WARNING_VISUAL_BEEPER, false);
  
@@ -226,6 +228,7 @@
  
      osdConfigMutable()->core_temp_alarm   = 85;
      osdConfigMutable()->displayPortDevice = OSD_DISPLAYPORT_DEVICE_MAX7456;
+     osdConfigMutable()->enabled_stats     = 591396;               /* osd_stat_bitmask */
  
      /* Video Transmitter -> Select Mode */
      vtxSettingsConfigMutable()->band = 4;
@@ -236,35 +239,70 @@
      vcdProfileMutable()->video_system = VIDEO_SYSTEM_NTSC;
  
      /* Unknow -> CPU */
-     schedulerConfigMutable()->cpuLatePercentageLimit = 35;
- 
+     schedulerConfigMutable()->cpuLatePercentageLimit = 50;
+     systemConfigMutable()->cpu_overclock = 2;
+
      /* Configuration -> Personalization */
      strcpy(pilotConfigMutable()->craftName, USBD_PRODUCT_STRING);
+     strcpy(pilotConfigMutable()->pilotName, "HBRD F4 V4");
  
-     /* PID Tuning -> PID Profile Setting */
-     pidProfilesMutable(0)->pid[PID_PITCH].P = 86;
-     pidProfilesMutable(0)->pid[PID_PITCH].I = 155;
-     pidProfilesMutable(0)->pid[PID_PITCH].D = 44;
-     pidProfilesMutable(0)->pid[PID_PITCH].F = 62;
-     pidProfilesMutable(0)->pid[PID_ROLL].P = 59;
-     pidProfilesMutable(0)->pid[PID_ROLL].I = 105;
-     pidProfilesMutable(0)->pid[PID_ROLL].D = 35;
-     pidProfilesMutable(0)->pid[PID_ROLL].F = 43;
-     pidProfilesMutable(0)->thrustLinearization = 20;
-     pidProfilesMutable(0)->simplified_pids_mode = PID_SIMPLIFIED_TUNING_RP;
-     pidProfilesMutable(0)->simplified_master_multiplier = 120;
-     pidProfilesMutable(0)->simplified_pi_gain = 110;
-     pidProfilesMutable(0)->simplified_i_gain = 0;
-     pidProfilesMutable(0)->simplified_feedforward_gain = 30;
-     pidProfilesMutable(0)->simplified_roll_pitch_ratio = 110;
-     pidProfilesMutable(0)->simplified_pitch_pi_gain = 140;
+     /* Gyro / Filters */
+     gyroConfigMutable()->gyro_lpf1_static_hz = 0;
+     gyroConfigMutable()->gyro_lpf1_dyn_min_hz = 0;
+     dynNotchConfigMutable()->dyn_notch_count = 1;
+     dynNotchConfigMutable()->dyn_notch_q = 400;
+     rpmFilterConfigMutable()->rpm_filter_weights[0] = 100;
+     rpmFilterConfigMutable()->rpm_filter_weights[1] = 20;
+     rpmFilterConfigMutable()->rpm_filter_weights[2] = 100;
+     rpmFilterConfigMutable()->rpm_filter_fade_range_hz = 100;
  
-     /* PID Tuning -> Rateprofile Settings */
+     /* PID Tuning -> PID Profile Setting (profile 0) */
+     pidProfilesMutable(0)->dterm_lpf1_dyn_min_hz = 71;
+     pidProfilesMutable(0)->dterm_lpf1_dyn_max_hz = 142;
+     pidProfilesMutable(0)->dterm_lpf1_dyn_expo    = 7;
+     pidProfilesMutable(0)->dterm_lpf1_static_hz   = 71;
+     pidProfilesMutable(0)->dterm_lpf2_static_hz   = 142;
+     pidProfilesMutable(0)->iterm_relax_cutoff     = 45;
+     pidProfilesMutable(0)->pid[PID_PITCH].P = 44;
+     pidProfilesMutable(0)->pid[PID_PITCH].I = 87;
+     pidProfilesMutable(0)->pid[PID_PITCH].D = 28;
+     pidProfilesMutable(0)->pid[PID_PITCH].F = 143;
+     pidProfilesMutable(0)->pid[PID_ROLL].P  = 42;
+     pidProfilesMutable(0)->pid[PID_ROLL].I  = 83;
+     pidProfilesMutable(0)->pid[PID_ROLL].D  = 25;
+     pidProfilesMutable(0)->pid[PID_ROLL].F  = 138;
+     pidProfilesMutable(0)->d_max[FD_ROLL]   = 31;
+     pidProfilesMutable(0)->d_max[FD_PITCH]  = 36;
+     pidProfilesMutable(0)->d_max_gain       = 0;
+     pidProfilesMutable(0)->d_max_advance    = 35;
+     pidProfilesMutable(0)->feedforward_jitter_factor      = 3;
+     pidProfilesMutable(0)->dyn_idle_min_rpm               = 120;
+     pidProfilesMutable(0)->thrustLinearization            = 20;
+     pidProfilesMutable(0)->simplified_pids_mode           = PID_SIMPLIFIED_TUNING_RP;
+     pidProfilesMutable(0)->simplified_master_multiplier   = 100;
+     pidProfilesMutable(0)->simplified_i_gain              = 110;
+     pidProfilesMutable(0)->simplified_d_gain              = 85;
+     pidProfilesMutable(0)->simplified_pi_gain             = 95;
+     pidProfilesMutable(0)->simplified_d_max_gain          = 70;
+     pidProfilesMutable(0)->simplified_feedforward_gain    = 115;
+     pidProfilesMutable(0)->simplified_roll_pitch_ratio    = 100;  /* simplified_pitch_d_gain */
+     pidProfilesMutable(0)->simplified_pitch_pi_gain       = 100;
+     pidProfilesMutable(0)->simplified_dterm_filter_multiplier = 95;
+ 
+     /* PID Tuning -> Rateprofile Settings (rateprofile 0) */
+     controlRateProfilesMutable(0)->thrMid8   = 35;
+     controlRateProfilesMutable(0)->thrExpo8  = 60;
+     controlRateProfilesMutable(0)->thrHover8 = 35;
+     controlRateProfilesMutable(0)->rcExpo[FD_ROLL]  = 54;
+     controlRateProfilesMutable(0)->rcExpo[FD_PITCH] = 54;
+     controlRateProfilesMutable(0)->rcExpo[FD_YAW]   = 54;
+     controlRateProfilesMutable(0)->rates[FD_ROLL]   = 52;
+     controlRateProfilesMutable(0)->rates[FD_PITCH]  = 52;
+     controlRateProfilesMutable(0)->rates[FD_YAW]    = 57;
      controlRateProfilesMutable(0)->rcRates[FD_ROLL] = 8;
      controlRateProfilesMutable(0)->rcRates[FD_PITCH] = 8;
-     controlRateProfilesMutable(0)->rcRates[FD_YAW] = 8;
-     controlRateProfilesMutable(0)->rates[FD_ROLL] = 73;
-     controlRateProfilesMutable(0)->rates[FD_PITCH] = 73;
-     controlRateProfilesMutable(0)->rates[FD_YAW] = 73;
+     controlRateProfilesMutable(0)->rcRates[FD_YAW]   = 8;
+     controlRateProfilesMutable(0)->throttle_limit_type    = THROTTLE_LIMIT_TYPE_SCALE;
+     controlRateProfilesMutable(0)->throttle_limit_percent = 98;
  }
  #endif
