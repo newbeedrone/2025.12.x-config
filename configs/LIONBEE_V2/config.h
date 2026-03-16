@@ -118,6 +118,7 @@
 #define FLASH_SPI_INSTANCE              SPI3
 #define BARO_BUSTYPE                    BUS_TYPE_I2C
 #define MAG_BUSTYPE                     BUS_TYPE_I2C
+#define GPS_UART                        SERIAL_PORT_UART5
 #define BARO_I2C_INSTANCE               I2CDEV_2
 #define MAG_I2C_INSTANCE                I2CDEV_2
 #define DEFAULT_BLACKBOX_DEVICE         BLACKBOX_DEVICE_FLASH
