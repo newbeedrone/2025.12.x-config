@@ -25,6 +25,48 @@
 
 #include "platform.h"
 
+#include "common/sensor_alignment.h"
+#include "drivers/accgyro/accgyro.h"
+#include "pg/gyrodev.h"
+#include "sensors/boardalignment.h"
+#include "sensors/gyro.h"
+#include "sensors/gyro_init.h"
+
+// LIONBEE_V2 ships with either ICM42688P or BMI270 on the same PCB layout.
+// Chip alignment matches both LIONBEE_V2 / LIONBEE_V2_HD targets (CW270_DEG).
+// Board-level correction: V2 (42688) = pitch 180 only; V2_HD (BMI270) adds yaw 90 (see respective config.h).
+// Runs after gyro autodetect, before gyroInitSensor() — see targetGyroDeviceConfigPostDetect() in gyro_init.c.
+void targetGyroDeviceConfigPostDetect(void)
+{
+    const int idx = firstEnabledGyro();
+    if (idx < 0) {
+        return;
+    }
+
+    const gyroHardware_e hw = gyro.gyroSensor[idx].gyroDev.gyroHardware;
+
+    gyroDeviceConfigMutable(idx)->alignment = CW270_DEG;
+
+    boardAlignment_t *board = boardAlignmentMutable();
+
+    switch (hw) {
+    case GYRO_BMI270:
+        board->rollDegrees = 0;
+        board->pitchDegrees = 180;
+        board->yawDegrees = 90;
+        break;
+    case GYRO_ICM42688P:
+        board->rollDegrees = 0;
+        board->pitchDegrees = 180;
+        board->yawDegrees = 0;
+        break;
+    default:
+        return;
+    }
+
+    initBoardAlignment(boardAlignment());
+}
+
 #ifdef USE_TARGET_CONFIG
 
 #include "blackbox/blackbox.h"
