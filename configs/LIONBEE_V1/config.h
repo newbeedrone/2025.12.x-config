@@ -29,9 +29,9 @@
 
 #define FC_TARGET_MCU     AT32F435G
 
-#define TARGET_BOARD_IDENTIFIER         "LIONBEE V2"
-#define USBD_PRODUCT_STRING             "LIONBEE V2"
-#define BOARD_NAME        LIONBEE_V2
+#define TARGET_BOARD_IDENTIFIER         "LIONBEE V1"
+#define USBD_PRODUCT_STRING             "LIONBEE V1"
+#define BOARD_NAME        LIONBEE_V1
 #define MANUFACTURER_ID   NBD
 
 #define USE_ACC
