@@ -260,6 +260,7 @@ void targetConfiguration(void) {
     mixerConfigMutable()->yaw_motors_reversed = true;
     mixerConfigMutable()->crashflip_rate = 30;
     mixerConfigMutable()->crashflip_auto_rearm = true;
+    
     /* Mag */
     compassConfigMutable()->mag_hardware = MAG_QMC5883;
     compassConfigMutable()->mag_alignment = CW180_DEG;
