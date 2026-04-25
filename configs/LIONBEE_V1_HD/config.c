@@ -25,6 +25,48 @@
 
 #include "platform.h"
 
+#include "common/sensor_alignment.h"
+#include "drivers/accgyro/accgyro.h"
+#include "pg/gyrodev.h"
+#include "sensors/boardalignment.h"
+#include "sensors/gyro.h"
+#include "sensors/gyro_init.h"
+
+// LIONBEE_V2 ships with either ICM42688P or BMI270 on the same PCB layout.
+// Chip alignment matches both LIONBEE_V2 / LIONBEE_V2_HD targets (CW270_DEG).
+// Board-level correction: V2 (42688) = pitch 180 only; V2_HD (BMI270) adds yaw 90 (see respective config.h).
+// Runs after gyro autodetect, before gyroInitSensor() — see targetGyroDeviceConfigPostDetect() in gyro_init.c.
+void targetGyroDeviceConfigPostDetect(void)
+{
+    const int idx = firstEnabledGyro();
+    if (idx < 0) {
+        return;
+    }
+
+    const gyroHardware_e hw = gyro.gyroSensor[idx].gyroDev.gyroHardware;
+
+    gyroDeviceConfigMutable(idx)->alignment = CW270_DEG;
+
+    boardAlignment_t *board = boardAlignmentMutable();
+
+    switch (hw) {
+    case GYRO_BMI270:
+        board->rollDegrees = 0;
+        board->pitchDegrees = 180;
+        board->yawDegrees = 90;
+        break;
+    case GYRO_ICM42688P:
+        board->rollDegrees = 0;
+        board->pitchDegrees = 180;
+        board->yawDegrees = 0;
+        break;
+    default:
+        return;
+    }
+
+    initBoardAlignment(boardAlignment());
+}
+
 #ifdef USE_TARGET_CONFIG
 
 #include "blackbox/blackbox.h"
@@ -139,66 +181,8 @@ void targetConfiguration(void) {
     modeActivationConditionsMutable(4)->range.startStep = CHANNEL_VALUE_TO_STEP(1700);
     modeActivationConditionsMutable(4)->range.endStep   = CHANNEL_VALUE_TO_STEP(2100);
 
-    /* Video Transmitter -> VTX Table */
-#define _USER_VTX_TABLE_MAX_BANDS           5
-#define _USER_VTX_TABLE_MAX_CHANNELS        8
-#define _USER_VTX_TABLE_MAX_POWER_LEVELS    3
-
-    uint16_t vtxTableFrequency[_USER_VTX_TABLE_MAX_BANDS][_USER_VTX_TABLE_MAX_CHANNELS] = {
-        { 5865, 5845, 5825, 5805, 5785, 5765, 5745, 5725 }, // Boscam A
-        { 5733, 5752, 5771, 5790, 5809, 5828, 5847, 5866 }, // Boscam B
-        { 5705, 5685, 5665,    0, 5885, 5905,    0,    0 }, // Boscam E
-        { 5740, 5760, 5780, 5800, 5820, 5840, 5860, 5880 }, // FatShark
-        { 5658, 5695, 5732, 5769, 5806, 5843, 5880, 5917 }, // RaceBand
-    };
-
-    const char *vtxTableBandNames[_USER_VTX_TABLE_MAX_BANDS + 1] = {
-        "BOSCAM A",
-        "BOSCAM B",
-        "BOSCAM E",
-        "FATSHARK",
-        "RACEBAND",
-    };
-
-    char vtxTableBandLetters[_USER_VTX_TABLE_MAX_BANDS + 1] = {
-        "ABEFR",
-    };
-
-    const char *vtxTableChannelNames[_USER_VTX_TABLE_MAX_CHANNELS + 1] = {
-        "1", "2", "3", "4", "5", "6", "7", "8",
-    };
-
-    const char *rtc6705PowerNames[_USER_VTX_TABLE_MAX_POWER_LEVELS + 1] = {
-        "25 ", "100", "MAX",
-    };
-
-    vtxTableConfigMutable()->bands = _USER_VTX_TABLE_MAX_BANDS;
-    vtxTableConfigMutable()->channels = _USER_VTX_TABLE_MAX_CHANNELS;
-    vtxTableConfigMutable()->powerLevels = _USER_VTX_TABLE_MAX_POWER_LEVELS;
-
-    for (uint8_t i = 0; i < _USER_VTX_TABLE_MAX_BANDS; i++) {
-        for (uint8_t j = 0; j < _USER_VTX_TABLE_MAX_CHANNELS; j++) {
-            vtxTableConfigMutable()->frequency[i][j] = vtxTableFrequency[i][j];
-        }
-    }
-    for (uint8_t i = 0; i < _USER_VTX_TABLE_MAX_BANDS; i++) {
-        strcpy(vtxTableConfigMutable()->bandNames[i], vtxTableBandNames[i]);
-        vtxTableConfigMutable()->bandLetters[i] = vtxTableBandLetters[i];
-    }
-    for (uint8_t i = 0; i < _USER_VTX_TABLE_MAX_CHANNELS; i++) {
-        strcpy(vtxTableConfigMutable()->channelNames[i], vtxTableChannelNames[i]);
-    }
-    for (uint8_t i = 0; i < _USER_VTX_TABLE_MAX_POWER_LEVELS; i++) {
-        vtxTableConfigMutable()->powerValues[i] = i;
-        strcpy(vtxTableConfigMutable()->powerLabels[i], rtc6705PowerNames[i]);
-    }
-
-#undef _USER_VTX_TABLE_MAX_BANDS
-#undef _USER_VTX_TABLE_MAX_CHANNELS
-#undef _USER_VTX_TABLE_MAX_POWER_LEVELS
-
     /* Motors */
-    motorConfigMutable()->motorIdle = 1600;
+    motorConfigMutable()->motorIdle = 500;
     motorConfigMutable()->dev.useDshotTelemetry = DSHOT_TELEMETRY_ON;
     motorConfigMutable()->dev.motorProtocol = PWM_TYPE_DSHOT600;
     motorConfigMutable()->motorPoleCount = 12;

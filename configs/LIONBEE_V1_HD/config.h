@@ -29,7 +29,7 @@
 
 #define FC_TARGET_MCU     AT32F435G
 
-#define BOARD_NAME        LIONBEE_V2_HD
+#define BOARD_NAME        LIONBEE_V1_HD
 #define MANUFACTURER_ID   LIONBEE
 
 #define USE_ACC
@@ -50,6 +50,7 @@
 #define USE_ALTITUDE_HOLD
 #define USE_POSITION_HOLD
 #define USE_MSP_DISPLAYPORT_FONT
+#define AT_USB_INIT_DELAY
 
 #define MOTOR1_PIN           PA1
 #define MOTOR2_PIN           PA0
@@ -97,7 +98,7 @@
 #define ADC1_DMA_OPT        12
 
 #define DEFAULT_DSHOT_BITBANG        DSHOT_BITBANG_ON
-#define SERIALRX_UART                SERIAL_PORT_UART3
+#define SERIALRX_UART                SERIAL_PORT_UART4
 #define DEFAULT_RX_FEATURE           FEATURE_RX_SERIAL
 #define SERIALRX_PROVIDER            SERIALRX_CRSF
 #define GYRO_1_SPI_INSTANCE          SPI1
