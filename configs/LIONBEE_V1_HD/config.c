@@ -25,6 +25,48 @@
 
 #include "platform.h"
 
+#include "common/sensor_alignment.h"
+#include "drivers/accgyro/accgyro.h"
+#include "pg/gyrodev.h"
+#include "sensors/boardalignment.h"
+#include "sensors/gyro.h"
+#include "sensors/gyro_init.h"
+
+// LIONBEE_V2 ships with either ICM42688P or BMI270 on the same PCB layout.
+// Chip alignment matches both LIONBEE_V2 / LIONBEE_V2_HD targets (CW270_DEG).
+// Board-level correction: V2 (42688) = pitch 180 only; V2_HD (BMI270) adds yaw 90 (see respective config.h).
+// Runs after gyro autodetect, before gyroInitSensor() — see targetGyroDeviceConfigPostDetect() in gyro_init.c.
+void targetGyroDeviceConfigPostDetect(void)
+{
+    const int idx = firstEnabledGyro();
+    if (idx < 0) {
+        return;
+    }
+
+    const gyroHardware_e hw = gyro.gyroSensor[idx].gyroDev.gyroHardware;
+
+    gyroDeviceConfigMutable(idx)->alignment = CW270_DEG;
+
+    boardAlignment_t *board = boardAlignmentMutable();
+
+    switch (hw) {
+    case GYRO_BMI270:
+        board->rollDegrees = 0;
+        board->pitchDegrees = 180;
+        board->yawDegrees = 90;
+        break;
+    case GYRO_ICM42688P:
+        board->rollDegrees = 0;
+        board->pitchDegrees = 180;
+        board->yawDegrees = 0;
+        break;
+    default:
+        return;
+    }
+
+    initBoardAlignment(boardAlignment());
+}
+
 #ifdef USE_TARGET_CONFIG
 
 #include "blackbox/blackbox.h"
@@ -140,7 +182,7 @@ void targetConfiguration(void) {
     modeActivationConditionsMutable(4)->range.endStep   = CHANNEL_VALUE_TO_STEP(2100);
 
     /* Motors */
-    motorConfigMutable()->motorIdle = 1600;
+    motorConfigMutable()->motorIdle = 500;
     motorConfigMutable()->dev.useDshotTelemetry = DSHOT_TELEMETRY_ON;
     motorConfigMutable()->dev.motorProtocol = PWM_TYPE_DSHOT600;
     motorConfigMutable()->motorPoleCount = 12;
@@ -158,7 +200,8 @@ void targetConfiguration(void) {
 
     /* Motors -> Mixer */
     mixerConfigMutable()->yaw_motors_reversed = true;
-
+    mixerConfigMutable()->crashflip_rate = 30;
+    mixerConfigMutable()->crashflip_auto_rearm = true;
     /* Mag */
     compassConfigMutable()->mag_hardware = MAG_QMC5883;
     compassConfigMutable()->mag_alignment = CW180_DEG;
@@ -177,10 +220,15 @@ void targetConfiguration(void) {
     osdElementConfigMutable()->item_pos[OSD_WARNINGS]           = OSD_PROFILE_1_FLAG | OSD_PROFILE_FLAG(2) | OSD_PROFILE_FLAG(3) | OSD_POS(9, 6);
 
     osdConfigMutable()->core_temp_alarm   = 85;
-    osdConfigMutable()->displayPortDevice = OSD_DISPLAYPORT_DEVICE_MSP;
+    osdConfigMutable()->displayPortDevice = OSD_DISPLAYPORT_DEVICE_MAX7456;
+
+    /* Video Transmitter -> Select Mode */
+    vtxSettingsConfigMutable()->band = 4;
+    vtxSettingsConfigMutable()->channel = 4;
+    vtxSettingsConfigMutable()->power = 1;
 
     /* OSD -> Video Format */
-    vcdProfileMutable()->video_system = VIDEO_SYSTEM_HD;
+    vcdProfileMutable()->video_system = VIDEO_SYSTEM_NTSC;
 
     /* Unknow -> CPU */
     schedulerConfigMutable()->cpuLatePercentageLimit = 35;
@@ -202,46 +250,50 @@ void targetConfiguration(void) {
     rpmFilterConfigMutable()->rpm_filter_weights[1] = 20;
     rpmFilterConfigMutable()->rpm_filter_weights[2] = 100;
     rpmFilterConfigMutable()->rpm_filter_fade_range_hz = 100;
-    rpmFilterConfigMutable()->rpm_filter_harmonics = 1;
-    rpmFilterConfigMutable()->rpm_filter_fade_range_hz = 120;
-
+    rpmFilterConfigMutable()->rpm_filter_harmonics = 3;
+    rpmFilterConfigMutable()->rpm_filter_fade_range_hz = 100;
+    
     /* PID Tuning -> PID Profile Setting */
     pidProfilesMutable(0)->dterm_lpf1_dyn_min_hz = 75;
     pidProfilesMutable(0)->dterm_lpf1_dyn_max_hz = 150;
-    pidProfilesMutable(0)->dterm_lpf1_dyn_expo = 5;
+    pidProfilesMutable(0)->dterm_lpf1_dyn_expo = 7;
     pidProfilesMutable(0)->dterm_lpf1_static_hz = 75;
     pidProfilesMutable(0)->dterm_lpf2_static_hz = 150;
-    pidProfilesMutable(0)->iterm_relax_cutoff = 15;
+    pidProfilesMutable(0)->iterm_relax_cutoff = 45;
+    pidProfilesMutable(0)->vbat_sag_compensation = 100;
+    pidProfilesMutable(0)->throttle_boost = 10;
     pidProfilesMutable(0)->itermLimit = 400;
     pidProfilesMutable(0)->pidSumLimitYaw = 400;
-    pidProfilesMutable(0)->pid[PID_PITCH].P = 61;
-    pidProfilesMutable(0)->pid[PID_PITCH].I = 109;
-    pidProfilesMutable(0)->pid[PID_PITCH].D = 59;
-    pidProfilesMutable(0)->pid[PID_PITCH].F = 68;
-    pidProfilesMutable(0)->pid[PID_ROLL].P = 58;
-    pidProfilesMutable(0)->pid[PID_ROLL].I = 104;
-    pidProfilesMutable(0)->pid[PID_ROLL].D = 52;
-    pidProfilesMutable(0)->pid[PID_ROLL].F = 66;
-    pidProfilesMutable(0)->pid[PID_YAW].P = 58;
-    pidProfilesMutable(0)->pid[PID_YAW].I = 104;
-    pidProfilesMutable(0)->pid[PID_YAW].F = 66;
-    pidProfilesMutable(0)->dyn_idle_min_rpm = 0;
+    pidProfilesMutable(0)->pid[PID_PITCH].P = 91;
+    pidProfilesMutable(0)->pid[PID_PITCH].I = 90;
+    pidProfilesMutable(0)->pid[PID_PITCH].F = 155;
+    pidProfilesMutable(0)->pid[PID_ROLL].P = 73;
+    pidProfilesMutable(0)->pid[PID_ROLL].I = 71;
+    pidProfilesMutable(0)->pid[PID_ROLL].F = 124;
+    pidProfilesMutable(0)->pid[PID_YAW].P = 45;
+    pidProfilesMutable(0)->pid[PID_YAW].I = 80;
+    pidProfilesMutable(0)->pid[PID_YAW].F = 120;
+    pidProfilesMutable(0)->d_max[FD_ROLL] = 70;
+    pidProfilesMutable(0)->d_max[FD_PITCH] = 80;
+    pidProfilesMutable(0)->d_max_gain = 0;
+    pidProfilesMutable(0)->d_max_advance = 40;
+    pidProfilesMutable(0)->dyn_idle_min_rpm = 70;
     pidProfilesMutable(0)->dyn_idle_p_gain  = 50;
-    pidProfilesMutable(0)->thrustLinearization = 0;
+    pidProfilesMutable(0)->thrustLinearization = 20;
     pidProfilesMutable(0)->simplified_pids_mode = PID_SIMPLIFIED_TUNING_RPY;
-    pidProfilesMutable(0)->feedforward_averaging = FEEDFORWARD_AVERAGING_OFF;
-    pidProfilesMutable(0)->feedforward_smooth_factor = 25;
-    pidProfilesMutable(0)->feedforward_jitter_factor = 7;
+    pidProfilesMutable(0)->feedforward_averaging = FEEDFORWARD_AVERAGING_2_POINT;
+    pidProfilesMutable(0)->feedforward_smooth_factor = 65;
+    pidProfilesMutable(0)->feedforward_jitter_factor = 2;
     pidProfilesMutable(0)->feedforward_boost = 15;
-    pidProfilesMutable(0)->feedforward_max_rate_limit = 90; 
-    pidProfilesMutable(0)->simplified_master_multiplier = 100;
-    pidProfilesMutable(0)->simplified_i_gain = 100;
-    pidProfilesMutable(0)->simplified_d_gain = 130;
-    pidProfilesMutable(0)->simplified_pi_gain = 130;
-    pidProfilesMutable(0)->simplified_feedforward_gain = 55;
+    pidProfilesMutable(0)->feedforward_max_rate_limit = 90;
+    pidProfilesMutable(0)->simplified_master_multiplier = 130;
+    pidProfilesMutable(0)->simplified_i_gain = 55;
+    pidProfilesMutable(0)->simplified_d_gain = 135;
+    pidProfilesMutable(0)->simplified_pi_gain = 125;
+    pidProfilesMutable(0)->simplified_feedforward_gain = 80;
     pidProfilesMutable(0)->simplified_roll_pitch_ratio = 100;
     pidProfilesMutable(0)->simplified_dterm_filter_multiplier = 100;
-    pidProfilesMutable(0)->simplified_pitch_pi_gain = 100;
+    pidProfilesMutable(0)->simplified_pitch_pi_gain = 120;
     pidProfilesMutable(0)->ez_landing_limit = 15;
 
     /* PID Tuning -> Rateprofile Settings */
