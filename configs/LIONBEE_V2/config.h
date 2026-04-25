@@ -29,9 +29,9 @@
 
 #define FC_TARGET_MCU     AT32F435G
 
-#define TARGET_BOARD_IDENTIFIER         "LIONBEE V1"
-#define USBD_PRODUCT_STRING             "LIONBEE V1"
-#define BOARD_NAME        LIONBEE_V1
+#define TARGET_BOARD_IDENTIFIER         "LIONBEE V2"
+#define USBD_PRODUCT_STRING             "LIONBEE V2"
+#define BOARD_NAME        LIONBEE_V2
 #define MANUFACTURER_ID   NBD
 
 #define USE_ACC
@@ -40,15 +40,10 @@
 #define USE_GYRO_SPI_ICM42688P
 #define USE_ACCGYRO_BMI270
 
-#define USE_ELRSV3
 #define USE_FLASH
 #define USE_FLASH_M25P16
 #define USE_FLASH_W25Q128FV
 #define USE_FLASH_W25N01G
-#define USE_RX_SPI
-#define USE_RX_EXPRESSLRS
-#define USE_RX_SX1280
-#undef  USE_RX_SX127X
 #define USE_BARO
 #define USE_BARO_DPS310
 #define USE_MAG
@@ -63,36 +58,34 @@
 #define MOTOR2_PIN           PA0
 #define MOTOR3_PIN           PA9
 #define MOTOR4_PIN           PA10
-#define LED0_PIN             PB8
+#define LED0_PIN             PB13
 #define LED_STRIP_PIN        PB1
+#define UART1_RX_PIN         PB3
+#define UART1_TX_PIN         PA15
+#define UART3_RX_PIN         PB11
+#define UART3_TX_PIN         PB10
+#define UART4_RX_PIN         PH3
+#define UART4_TX_PIN         PH2
 #define UART5_RX_PIN         PB5
 #define UART5_TX_PIN         PB6
-#define I2C2_SCL_PIN         PB10
-#define I2C2_SDA_PIN         PB11
-#define RTC6705_EX_POWER_1_PIN          PA14   // External VTx Power LSB
+#define I2C1_SCL_PIN         PB8
+#define I2C1_SDA_PIN         PB9
+#define RTC6705_EX_POWER_1_PIN          PA8   // External VTx Power LSB
 #define RTC6705_EX_POWER_2_PIN          PB7    // External VTx Power MSB
 
 #define SPI1_SCK_PIN         PA5
 #define SPI1_SDO_PIN         PA7
 #define SPI1_SDI_PIN         PA6
 #define SPI1_NSS_PIN         PA4
-#define SPI2_SCK_PIN         PB13
-#define SPI2_SDI_PIN         PB14
-#define SPI2_SDO_PIN         PB15
 #define SPI3_SCK_PIN         PB12
 #define SPI3_SDI_PIN         PB4
 #define SPI3_SDO_PIN         PB0
-#define RX_SPI_CS_PIN                   PA8
-#define RX_SPI_LED_PIN                  PB9
-#define RX_SPI_EXTI_PIN                 PB3
-#define RX_SPI_BIND_PIN                 PH2
-#define RX_EXPRESSLRS_SPI_RESET_PIN     PH3
-#define RX_EXPRESSLRS_SPI_BUSY_PIN      PA15
 #define ADC_VBAT_PIN         PA2
 #define ADC_CURR_PIN         PA3
 #define FLASH_CS_PIN         PC15
 #define MAX7456_SPI_CS_PIN   PC14
 #define RTC6705_CS_PIN       PB2
+#define PINIO1_PIN           PB14  //VTX 10V 
 #define GYRO_1_EXTI_PIN      PC13
 #define GYRO_1_CS_PIN        SPI1_NSS_PIN
 
@@ -106,14 +99,9 @@
 #define ADC_INSTANCE        ADC1    
 #define ADC1_DMA_OPT        12
 
-#define RX_SPI_INSTANCE                 SPI2
-#define RX_EXPRESSLRS_TIMER_INSTANCE    TMR5//( BIT(1) | BIT(2) | BIT(3) | BIT(4) | BIT(5) | BIT(8) | BIT(20) )
-#define RX_SPI_LED_INVERTED
-#define RX_SPI_PROTOCOL                 EXPRESSLRS
-#define RX_SPI_DEFAULT_PROTOCOL         RX_SPI_EXPRESSLRS
-#define DEFAULT_RX_FEATURE              FEATURE_RX_SPI
 #define GYRO_1_SPI_INSTANCE             SPI1
 #define GYRO_1_ALIGN                    CW270_DEG
+#define DEFAULT_ALIGN_BOARD_YAW         90
 #define DEFAULT_ALIGN_BOARD_PITCH       180
 #define MAX7456_SPI_INSTANCE            SPI3
 #define RTC6705_SPI_INSTANCE            SPI3
@@ -122,15 +110,20 @@
 #define FLASH_SPI_INSTANCE              SPI3
 #define BARO_BUSTYPE                    BUS_TYPE_I2C
 #define MAG_BUSTYPE                     BUS_TYPE_I2C
+#define SERIALRX_UART                   SERIAL_PORT_USART1
+#define DEFAULT_RX_FEATURE              FEATURE_RX_SERIAL
 #define GPS_UART                        SERIAL_PORT_UART5
-#define BARO_I2C_INSTANCE               I2CDEV_2
-#define MAG_I2C_INSTANCE                I2CDEV_2
+#define BARO_I2C_INSTANCE               I2CDEV_1
+#define MAG_I2C_INSTANCE                I2CDEV_1
 #define DEFAULT_BLACKBOX_DEVICE         BLACKBOX_DEVICE_FLASH
 #define DEFAULT_VOLTAGE_METER_SCALE     110
 #define DEFAULT_CURRENT_METER_SCALE     447
 #define DEFAULT_CURRENT_METER_SOURCE    CURRENT_METER_ADC
 #define DEFAULT_VOLTAGE_METER_SOURCE    VOLTAGE_METER_ADC
 #define AT_USB_INIT_DELAY
+#define PINIO1_BOX 40
+#define PINIO1_CONFIG 129
+#define BOX_USER1_NAME       "VTX 10V"
 #define SYSTEM_HSE_MHZ 8
 #ifndef USE_TARGET_CONFIG
 #define USE_TARGET_CONFIG
