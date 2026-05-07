@@ -54,6 +54,7 @@
 #define USE_VTX_RTC6705
 #define SPI_SHARED_MAX7456_AND_RTC6705
 
+// #define BEEPER_PIN           PB10
 #define MOTOR1_PIN           PA1
 #define MOTOR2_PIN           PA0
 #define MOTOR3_PIN           PA9
@@ -99,6 +100,7 @@
 #define ADC_INSTANCE        ADC1    
 #define ADC1_DMA_OPT        12
 
+#define BEEPER_INVERTED
 #define GYRO_1_SPI_INSTANCE             SPI1
 #define GYRO_1_ALIGN                    CW270_DEG
 #define DEFAULT_ALIGN_BOARD_YAW         90
