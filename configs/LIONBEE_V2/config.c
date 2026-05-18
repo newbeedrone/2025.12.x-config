@@ -240,7 +240,7 @@ void targetConfiguration(void) {
 #undef _USER_VTX_TABLE_MAX_POWER_LEVELS
 
     /* Motors */
-    motorConfigMutable()->motorIdle = 1600;
+    motorConfigMutable()->motorIdle = 0;
     motorConfigMutable()->dev.useDshotTelemetry = DSHOT_TELEMETRY_ON;
     motorConfigMutable()->dev.motorProtocol = PWM_TYPE_DSHOT600;
     motorConfigMutable()->motorPoleCount = 12;
