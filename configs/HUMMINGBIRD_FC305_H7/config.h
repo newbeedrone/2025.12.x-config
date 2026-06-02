@@ -123,7 +123,8 @@
     TIMER_PIN_MAP( 8, SERVO1_PIN , 1,  -1)\
     TIMER_PIN_MAP( 9, SERVO2_PIN , 1,  -1)\
     TIMER_PIN_MAP( 10, BEEPER_PIN , 1,  -1)\
-    TIMER_PIN_MAP( 11, LED_STRIP_PIN , 1,  0)
+    TIMER_PIN_MAP( 11, LED_STRIP_PIN , 1,  0)\
+    TIMER_PIN_MAP( 12, GYRO_1_CLKIN_PIN , 1,  -1)
 
 #define ADC_INSTANCE        ADC1    
 #define ADC1_DMA_OPT        8
