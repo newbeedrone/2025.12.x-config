@@ -112,6 +112,7 @@ void targetGyroDeviceConfigPostDetect(void)
 #include "msp/msp_box.h"
 
 #include "osd/osd.h"
+#include "osd/osd_elements.h"
 
 #include "pg/adc.h"
 #include "pg/beeper.h"
@@ -260,9 +261,10 @@ void targetConfiguration(void) {
     mixerConfigMutable()->yaw_motors_reversed = true;
     mixerConfigMutable()->crashflip_rate = 30;
     mixerConfigMutable()->crashflip_auto_rearm = true;
+
     /* Mag */
     compassConfigMutable()->mag_hardware = MAG_QMC5883;
-    compassConfigMutable()->mag_alignment = CW180_DEG;
+    compassConfigMutable()->mag_alignment = CW0_DEG_FLIP;
 
     /* OSD */
     osdWarnSetState(OSD_WARNING_BATTERY_NOT_FULL, false);
@@ -276,6 +278,17 @@ void targetConfiguration(void) {
     osdElementConfigMutable()->item_pos[OSD_CURRENT_DRAW]       = OSD_PROFILE_1_FLAG | OSD_POS(23,11);
     osdElementConfigMutable()->item_pos[OSD_CRAFT_NAME]         = OSD_PROFILE_1_FLAG | OSD_POS(8 ,11);
     osdElementConfigMutable()->item_pos[OSD_WARNINGS]           = OSD_PROFILE_1_FLAG | OSD_PROFILE_FLAG(2) | OSD_PROFILE_FLAG(3) | OSD_POS(9, 6);
+    osdElementConfigMutable()->item_pos[OSD_HORIZON_SIDEBARS]   = OSD_POS(18, 5);
+    osdElementConfigMutable()->item_pos[OSD_ARTIFICIAL_HORIZON] = OSD_POS(10, 1);
+    osdElementConfigMutable()->item_pos[OSD_GPS_SPEED]          = OSD_POS(6, 9);
+    osdElementConfigMutable()->item_pos[OSD_GPS_LON]            = OSD_PROFILE_1_FLAG | (OSD_ELEMENT_TYPE_2 << 14) | OSD_POS(1, 1);
+    osdElementConfigMutable()->item_pos[OSD_GPS_LAT]            = OSD_PROFILE_1_FLAG | (OSD_ELEMENT_TYPE_2 << 14) | OSD_POS(20, 1);
+    osdElementConfigMutable()->item_pos[OSD_GPS_SATS]           = OSD_PROFILE_1_FLAG | OSD_POS(1, 9);
+    osdElementConfigMutable()->item_pos[OSD_HOME_DIR]           = OSD_PROFILE_1_FLAG | OSD_POS(14, 5);
+    osdElementConfigMutable()->item_pos[OSD_COMPASS_BAR]        = OSD_POS(11, 9);
+    osdElementConfigMutable()->item_pos[OSD_NUMERICAL_HEADING]  = OSD_POS(14, 7);
+    osdElementConfigMutable()->item_pos[OSD_UP_DOWN_REFERENCE]  = OSD_POS(14, 5);
+    osdElementConfigMutable()->item_pos[OSD_NUMERICAL_VARIO]    = OSD_POS(15, 8);
 
     osdConfigMutable()->core_temp_alarm   = 85;
     osdConfigMutable()->displayPortDevice = OSD_DISPLAYPORT_DEVICE_MAX7456;
