@@ -102,6 +102,11 @@ void targetConfiguration(void) {
     /* PID Frequency */
     pidConfigMutable()->pid_process_denom=1;
 
+    /* Gyro filtering */
+    gyroConfigMutable()->gyro_lpf1_static_hz = 0;
+    gyroConfigMutable()->gyro_lpf1_dyn_min_hz = 0;
+    gyroConfigMutable()->gyro_lpf1_dyn_max_hz = 0;
+
     /* RX Protocol */
     rxSpiConfigMutable()->rx_spi_protocol=RX_SPI_EXPRESSLRS;
 
@@ -235,46 +240,48 @@ void targetConfiguration(void) {
     controlRateProfilesMutable(0)->rates[FD_PITCH] = 68;
     controlRateProfilesMutable(0)->rates[FD_YAW] =68;
     
-    /* PID Tuning */
-    pidProfilesMutable(0)->vbat_sag_compensation = 60;
-    
-    // TEMPORARY LOW PID FOR GROUND TESTING - Commented out
-    // pidProfilesMutable(0)->pid[PID_PITCH].P = 10;
-    // pidProfilesMutable(0)->pid[PID_PITCH].I = 5;
-    // pidProfilesMutable(0)->pid[PID_PITCH].D = 0;
-    // pidProfilesMutable(0)->pid[PID_PITCH].F = 0;
-    // pidProfilesMutable(0)->pid[PID_ROLL].P = 10;
-    // pidProfilesMutable(0)->pid[PID_ROLL].I = 5;
-    // pidProfilesMutable(0)->pid[PID_ROLL].D = 0;
-    // pidProfilesMutable(0)->pid[PID_ROLL].F = 0;
-    // pidProfilesMutable(0)->pid[PID_YAW].P = 20;
-    // pidProfilesMutable(0)->pid[PID_YAW].I = 10;
-    // pidProfilesMutable(0)->pid[PID_YAW].F = 0;
-    
-    // RESTORE NORMAL PID VALUES
-    pidProfilesMutable(0)->pid[PID_PITCH].P = 42;
-    pidProfilesMutable(0)->pid[PID_PITCH].I = 22;
-    pidProfilesMutable(0)->pid[PID_PITCH].D = 55;
-    pidProfilesMutable(0)->pid[PID_PITCH].F = 22;
-    pidProfilesMutable(0)->pid[PID_ROLL].P = 40;
-    pidProfilesMutable(0)->pid[PID_ROLL].I = 21;
-    pidProfilesMutable(0)->pid[PID_ROLL].D = 54;
-    pidProfilesMutable(0)->pid[PID_ROLL].F = 22;
-    pidProfilesMutable(0)->pid[PID_YAW].P = 60;
-    pidProfilesMutable(0)->pid[PID_YAW].I = 30;
-    pidProfilesMutable(0)->pid[PID_YAW].F = 0;
-    
-    pidProfilesMutable(0)->d_max[FD_ROLL] = 54;
-    pidProfilesMutable(0)->d_max[FD_PITCH] = 55;
-    pidProfilesMutable(0)->thrustLinearization = 0;
-    pidProfilesMutable(0)->simplified_pids_mode = PID_SIMPLIFIED_TUNING_OFF;
+    /* PID Tuning -> Profile 0 */
+    pidProfilesMutable(0)->dterm_lpf1_dyn_min_hz = 67;
+    pidProfilesMutable(0)->dterm_lpf1_dyn_max_hz = 135;
+    pidProfilesMutable(0)->dterm_lpf1_static_hz = 67;
+    pidProfilesMutable(0)->dterm_lpf2_static_hz = 135;
+    pidProfilesMutable(0)->vbat_sag_compensation = 100;
+    pidProfilesMutable(0)->anti_gravity_gain = 0;
+    pidProfilesMutable(0)->tpa_rate = 50;
+
+    pidProfilesMutable(0)->pid[PID_PITCH].P = 35;
+    pidProfilesMutable(0)->pid[PID_PITCH].I = 70;
+    pidProfilesMutable(0)->pid[PID_PITCH].D = 30;
+    pidProfilesMutable(0)->pid[PID_PITCH].F = 114;
+    pidProfilesMutable(0)->pid[PID_ROLL].P = 42;
+    pidProfilesMutable(0)->pid[PID_ROLL].I = 83;
+    pidProfilesMutable(0)->pid[PID_ROLL].D = 25;
+    pidProfilesMutable(0)->pid[PID_ROLL].F = 138;
+    pidProfilesMutable(0)->pid[PID_YAW].P = 38;
+    pidProfilesMutable(0)->pid[PID_YAW].I = 20;
+    pidProfilesMutable(0)->pid[PID_YAW].D = 18;
+    pidProfilesMutable(0)->pid[PID_YAW].F = 48;
+
+    pidProfilesMutable(0)->d_max[FD_ROLL] = 32;
+    pidProfilesMutable(0)->d_max[FD_PITCH] = 38;
+    pidProfilesMutable(0)->d_max_gain = 30;
+    pidProfilesMutable(0)->d_max_advance = 16;
+    pidProfilesMutable(0)->thrustLinearization = 20;
+    pidProfilesMutable(0)->feedforward_jitter_factor = 2;
+    pidProfilesMutable(0)->simplified_pids_mode = PID_SIMPLIFIED_TUNING_RP;
     pidProfilesMutable(0)->simplified_master_multiplier = 100;
-    pidProfilesMutable(0)->simplified_i_gain = 0;   
-    pidProfilesMutable(0)->simplified_feedforward_gain = 100;
-    pidProfilesMutable(0)->simplified_pitch_pi_gain = 100;
+    pidProfilesMutable(0)->simplified_i_gain = 110;
+    pidProfilesMutable(0)->simplified_d_gain = 85;
+    pidProfilesMutable(0)->simplified_pi_gain = 95;
+    pidProfilesMutable(0)->simplified_d_max_gain = 80;
+    pidProfilesMutable(0)->simplified_feedforward_gain = 115;
+    pidProfilesMutable(0)->simplified_roll_pitch_ratio = 105;
+    pidProfilesMutable(0)->simplified_pitch_pi_gain = 80;
+    pidProfilesMutable(0)->simplified_dterm_filter_multiplier = 90;
     
     // Additional brushed motor specific PID settings
     pidProfilesMutable(0)->iterm_relax = ITERM_RELAX_RP_INC;  // Restore recommended setting
+    pidProfilesMutable(0)->iterm_relax_cutoff = 47;
     pidProfilesMutable(0)->pidSumLimit = 500;  // Restore normal limit
     pidProfilesMutable(0)->pidSumLimitYaw = 500;
 }
