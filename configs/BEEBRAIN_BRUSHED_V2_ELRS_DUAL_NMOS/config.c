@@ -191,6 +191,7 @@ void targetConfiguration(void) {
 #undef _USER_VTX_TABLE_MAX_POWER_LEVELS
 
     /* Motor Protocol -> Brushed Motors */
+    mixerConfigMutable()->yaw_motors_reversed = false;
     motorConfigMutable()->dev.motorProtocol = MOTOR_PROTOCOL_BRUSHED;  // MUST use BRUSHED for brushed motors!
     motorConfigMutable()->dev.motorPwmRate = BRUSHED_MOTORS_PWM_RATE;  // 16kHz default
     motorConfigMutable()->dev.useContinuousUpdate = true;
