@@ -50,7 +50,6 @@
 #define USE_ALTITUDE_HOLD
 #define USE_POSITION_HOLD
 #define USE_MSP_DISPLAYPORT_FONT
-#define AT_USB_INIT_DELAY
 #define USE_MAX7456
 
 #define MOTOR1_PIN           PA1
