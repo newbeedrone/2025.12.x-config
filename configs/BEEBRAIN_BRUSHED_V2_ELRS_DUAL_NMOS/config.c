@@ -198,9 +198,17 @@ void targetConfiguration(void) {
     motorConfigMutable()->motorIdle = 200;  // Set to 200 to ensure proper throttle response - minThrottle = 1000 + 200*0.1 = 1020
 
     /* Power & Battery */
+#if defined(BATTERY_PROFILE_COUNT)
+    for (unsigned profileIndex = 0; profileIndex < BATTERY_PROFILE_COUNT; profileIndex++) {
+        batteryProfilesMutable(profileIndex)->vbatmincellvoltage = 330;
+        batteryProfilesMutable(profileIndex)->vbatwarningcellvoltage = 350;
+        batteryProfilesMutable(profileIndex)->vbatmaxcellvoltage  = 440;
+    }
+#else
     batteryConfigMutable()->vbatmincellvoltage = 330;
     batteryConfigMutable()->vbatwarningcellvoltage = 350;
     batteryConfigMutable()->vbatmaxcellvoltage  = 440;
+#endif
 
     /* Configuration -> Arming */
     imuConfigMutable()->small_angle = 180;

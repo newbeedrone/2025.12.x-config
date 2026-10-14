@@ -206,9 +206,17 @@ void targetConfiguration(void) {
     motorConfigMutable()->motorPoleCount = 12;
 
     /* Power & Battery */
+#if defined(BATTERY_PROFILE_COUNT)
+    for (unsigned profileIndex = 0; profileIndex < BATTERY_PROFILE_COUNT; profileIndex++) {
+        batteryProfilesMutable(profileIndex)->vbatmincellvoltage = 330;
+        batteryProfilesMutable(profileIndex)->vbatwarningcellvoltage = 340;
+        batteryProfilesMutable(profileIndex)->vbatmaxcellvoltage  = 440;
+    }
+#else
     batteryConfigMutable()->vbatmincellvoltage = 330;
     batteryConfigMutable()->vbatwarningcellvoltage = 340;
     batteryConfigMutable()->vbatmaxcellvoltage  = 440;
+#endif
 
     /* Configuration -> Dshot Beacon Configuration */
     beeperConfigMutable()->dshotBeaconTone = DSHOT_CMD_BEACON2;

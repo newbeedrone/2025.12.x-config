@@ -38,6 +38,7 @@
 #define USE_LED_STRIP
 #define USE_RX_SPI
 #define USE_RX_EXPRESSLRS
+#define USE_ELRSV4
 #define USE_RX_SX1280
 #undef  USE_RX_SX127X
 #define USE_MAX7456

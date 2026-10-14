@@ -146,9 +146,17 @@ void targetConfiguration(void) {
     motorConfigMutable()->motorPoleCount = 12;
 
     /* Power & Battery */
+#if defined(BATTERY_PROFILE_COUNT)
+    for (unsigned profileIndex = 0; profileIndex < BATTERY_PROFILE_COUNT; profileIndex++) {
+        batteryProfilesMutable(profileIndex)->vbatmincellvoltage = 330;
+        batteryProfilesMutable(profileIndex)->vbatwarningcellvoltage = 340;
+        batteryProfilesMutable(profileIndex)->vbatmaxcellvoltage  = 440;
+    }
+#else
     batteryConfigMutable()->vbatmincellvoltage = 330;
     batteryConfigMutable()->vbatwarningcellvoltage = 340;
     batteryConfigMutable()->vbatmaxcellvoltage  = 440;
+#endif
 
     /* Configuration -> Arming */
     imuConfigMutable()->small_angle = 180;
@@ -161,7 +169,11 @@ void targetConfiguration(void) {
     mixerConfigMutable()->crashflip_rate = 30;
     mixerConfigMutable()->crashflip_auto_rearm = true;
     /* Mag */
+#if defined(USE_MAG_QMC5883L)
+    compassConfigMutable()->mag_hardware = MAG_QMC5883L;
+#else
     compassConfigMutable()->mag_hardware = MAG_QMC5883;
+#endif
     compassConfigMutable()->mag_alignment = CW180_DEG;
 
     /* OSD */

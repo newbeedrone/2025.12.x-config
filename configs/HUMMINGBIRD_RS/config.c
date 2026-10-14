@@ -208,9 +208,17 @@ void targetConfiguration(void) {
     systemConfigMutable()->cpu_overclock = 2;
 
     /* Power & Battery */
+#if defined(BATTERY_PROFILE_COUNT)
+    for (unsigned profileIndex = 0; profileIndex < BATTERY_PROFILE_COUNT; profileIndex++) {
+        batteryProfilesMutable(profileIndex)->vbatmincellvoltage = 330;
+        batteryProfilesMutable(profileIndex)->vbatmaxcellvoltage = 440;
+        batteryProfilesMutable(profileIndex)->vbatwarningcellvoltage = 340;
+    }
+#else
     batteryConfigMutable()->vbatmincellvoltage = 330;
     batteryConfigMutable()->vbatmaxcellvoltage = 440;
     batteryConfigMutable()->vbatwarningcellvoltage = 340;
+#endif
 
 
     /* Configuration -> Arming */
