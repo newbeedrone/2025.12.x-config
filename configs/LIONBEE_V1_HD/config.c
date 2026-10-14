@@ -182,7 +182,7 @@ void targetConfiguration(void) {
     modeActivationConditionsMutable(4)->range.endStep   = CHANNEL_VALUE_TO_STEP(2100);
 
     /* Motors */
-    motorConfigMutable()->motorIdle = 500;
+    motorConfigMutable()->motorIdle = 0;
     motorConfigMutable()->dev.useDshotTelemetry = DSHOT_TELEMETRY_ON;
     motorConfigMutable()->dev.motorProtocol = PWM_TYPE_DSHOT600;
     motorConfigMutable()->motorPoleCount = 12;
