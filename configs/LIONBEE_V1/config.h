@@ -115,7 +115,7 @@
 #define GYRO_1_SPI_INSTANCE             SPI1
 #define GYRO_1_ALIGN                    CW270_DEG
 #define DEFAULT_ALIGN_BOARD_PITCH       180
-// Rotate BMI270 gyro and accelerometer axes by CW90 before board alignment.
+// Rotate BMI270 axes by CW270 to preserve the legacy BMI270 board yaw correction.
 #define ENABLE_BMI270_ALIGN_AS_ICM      1
 #define MAX7456_SPI_INSTANCE            SPI3
 #define RTC6705_SPI_INSTANCE            SPI3
