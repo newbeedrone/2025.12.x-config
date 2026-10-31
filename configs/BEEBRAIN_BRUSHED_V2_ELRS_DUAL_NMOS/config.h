@@ -47,6 +47,9 @@
 #define USE_POSITION_HOLD
 #define USE_VTX_RTC6705
 #define SPI_SHARED_MAX7456_AND_RTC6705
+// Gyro shares SPI1 with MAX7456/RTC6705; gyro DMA corrupts the shared
+// bus traffic (gyro reads zero, acc garbage) - force polled gyro access.
+#define GYRO_SPI_FORCE_NO_DMA
 #define USE_BRUSHED_FLIPOVERAFTERCRASH
 // #define BRUSHED_FLIPOVERAFTERCRASH_LOW_ACTIVE 
 
