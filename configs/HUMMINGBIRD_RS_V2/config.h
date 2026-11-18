@@ -37,6 +37,7 @@
 #define USE_GYRO
 #define USE_GYRO_SPI_ICM42688P
 #define USE_ACCGYRO_BMI270
+#define ENABLE_BMI270_ALIGN_AS_ICM 1
 
 #define USE_BARO
 #define USE_BARO_DPS310
@@ -94,6 +95,7 @@
 #define GYRO_1_ALIGN                    CW90_DEG
 #define MAX7456_SPI_INSTANCE            SPI1
 #define RTC6705_SPI_INSTANCE            SPI1
+#define SPI_SHARED_MAX7456_AND_RTC6705
 #define USE_SPI_DMA_ENABLE_LATE
 #define SERIALRX_UART                   SERIAL_PORT_UART4
 #define SERIALRX_PROVIDER               SERIALRX_CRSF

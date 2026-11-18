@@ -228,14 +228,14 @@ void targetConfiguration(void) {
     osdWarnSetState(OSD_WARNING_BATTERY_NOT_FULL, false);
     osdWarnSetState(OSD_WARNING_VISUAL_BEEPER, false);
 
-    osdElementConfigMutable()->item_pos[OSD_MAIN_BATT_VOLTAGE]  = OSD_PROFILE_1_FLAG | OSD_POS(24,10);  /* 2392 */
-    osdElementConfigMutable()->item_pos[OSD_RSSI_VALUE]         = OSD_PROFILE_1_FLAG | OSD_POS(0, 10);  /* 2368 */
-    osdElementConfigMutable()->item_pos[OSD_ITEM_TIMER_2]       = OSD_PROFILE_1_FLAG | OSD_POS(0, 11);  /* 2400 */
-    osdElementConfigMutable()->item_pos[OSD_FLYMODE]            = OSD_PROFILE_1_FLAG | OSD_POS(18,10);  /* 2386 */
-    osdElementConfigMutable()->item_pos[OSD_VTX_CHANNEL]        = OSD_PROFILE_1_FLAG | OSD_POS(8, 10);  /* 2376 */
-    osdElementConfigMutable()->item_pos[OSD_CURRENT_DRAW]       = OSD_PROFILE_1_FLAG | OSD_POS(23,11);  /* 2423 */
-    osdElementConfigMutable()->item_pos[OSD_CRAFT_NAME]         = OSD_PROFILE_1_FLAG | OSD_POS(8, 11);  /* 2408 */
-    osdElementConfigMutable()->item_pos[OSD_WARNINGS]           = OSD_PROFILE_1_FLAG | OSD_PROFILE_FLAG(2) | OSD_PROFILE_FLAG(3) | OSD_POS(9, 6);
+    osdElementConfigMutable()->item_pos[OSD_MAIN_BATT_VOLTAGE]  = OSD_PROFILE_MASK | OSD_POS(24,10);  /* 14680 */
+    osdElementConfigMutable()->item_pos[OSD_RSSI_VALUE]         = OSD_PROFILE_MASK | OSD_POS(0, 10);  /* 14656 */
+    osdElementConfigMutable()->item_pos[OSD_ITEM_TIMER_2]       = OSD_PROFILE_MASK | OSD_POS(0, 11);  /* 14688 */
+    osdElementConfigMutable()->item_pos[OSD_FLYMODE]            = OSD_PROFILE_MASK | OSD_POS(18,10);  /* 14674 */
+    osdElementConfigMutable()->item_pos[OSD_VTX_CHANNEL]        = OSD_PROFILE_MASK | OSD_POS(8, 10);  /* 14664 */
+    osdElementConfigMutable()->item_pos[OSD_CURRENT_DRAW]       = OSD_PROFILE_MASK | OSD_POS(23,11);  /* 14711 */
+    osdElementConfigMutable()->item_pos[OSD_CRAFT_NAME]         = OSD_PROFILE_MASK | OSD_POS(8, 11);  /* 14696 */
+    osdElementConfigMutable()->item_pos[OSD_WARNINGS]           = OSD_PROFILE_MASK | OSD_POS(9, 6);
 
     osdConfigMutable()->displayPortDevice = OSD_DISPLAYPORT_DEVICE_MAX7456;
     osdConfigMutable()->core_temp_alarm = 85;

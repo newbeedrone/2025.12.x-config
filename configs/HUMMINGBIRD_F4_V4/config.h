@@ -45,6 +45,7 @@
 #define USE_GPS
 #define USE_ALTITUDE_HOLD
 #define USE_POSITION_HOLD
+#define USE_SERVOS
 #define USE_VTX_RTC6705
 #define SPI_SHARED_MAX7456_AND_RTC6705
 
@@ -56,8 +57,8 @@
 #define LED_STRIP_PIN        PB1
 #define UART1_RX_PIN         PA10
 #define UART1_TX_PIN         PA9
-#define UART2_RX_PIN         PA3
-#define UART2_TX_PIN         PA2
+#define SERVO1_PIN           PA2  // UART2 TX pad repurposed as servo PWM (TIM9_CH1)
+#define SERVO2_PIN           PA3  // UART2 RX pad repurposed as servo PWM (TIM9_CH2)
 #define RTC6705_EX_POWER_1_PIN          PA8   // External VTx Power LSB
 #define RTC6705_EX_POWER_2_PIN          PB13    // External VTx Power MSB
 
@@ -91,7 +92,9 @@
     TIMER_PIN_MAP( 1, MOTOR2_PIN    ,   2, 0) \
     TIMER_PIN_MAP( 2, MOTOR3_PIN    ,   1, 0) \
     TIMER_PIN_MAP( 3, MOTOR4_PIN    ,   1, 0) \
-    TIMER_PIN_MAP( 4, LED_STRIP_PIN ,   1, 0)
+    TIMER_PIN_MAP( 4, LED_STRIP_PIN ,   1, 0) \
+    TIMER_PIN_MAP( 5, SERVO1_PIN    ,   3, 0) \
+    TIMER_PIN_MAP( 6, SERVO2_PIN    ,   3, 0)
 
 #define ADC_INSTANCE        ADC1    
 #define ADC1_DMA_OPT        0

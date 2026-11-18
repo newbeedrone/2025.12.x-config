@@ -228,14 +228,14 @@ void targetConfiguration(void) {
     osdWarnSetState(OSD_WARNING_BATTERY_NOT_FULL, false);
     osdWarnSetState(OSD_WARNING_VISUAL_BEEPER, false);
 
-    osdElementConfigMutable()->item_pos[OSD_MAIN_BATT_VOLTAGE]  = OSD_PROFILE_1_FLAG | OSD_POS(24,10);
-    osdElementConfigMutable()->item_pos[OSD_RSSI_VALUE]         = OSD_PROFILE_1_FLAG | OSD_POS(1, 11);
-    osdElementConfigMutable()->item_pos[OSD_ITEM_TIMER_2]       = OSD_PROFILE_1_FLAG | OSD_POS(1, 10);
-    osdElementConfigMutable()->item_pos[OSD_FLYMODE]            = OSD_PROFILE_1_FLAG | OSD_POS(18,10);
-    osdElementConfigMutable()->item_pos[OSD_VTX_CHANNEL]        = OSD_PROFILE_1_FLAG | OSD_POS(8, 10);
-    osdElementConfigMutable()->item_pos[OSD_CURRENT_DRAW]       = OSD_PROFILE_1_FLAG | OSD_POS(23,11);
-    osdElementConfigMutable()->item_pos[OSD_CRAFT_NAME]         = OSD_PROFILE_1_FLAG | OSD_POS(8 ,11);
-    osdElementConfigMutable()->item_pos[OSD_WARNINGS]           = OSD_PROFILE_1_FLAG | OSD_PROFILE_FLAG(2) | OSD_PROFILE_FLAG(3) | OSD_POS(9, 6);
+    osdElementConfigMutable()->item_pos[OSD_MAIN_BATT_VOLTAGE]  = OSD_PROFILE_MASK | OSD_POS(24,10);
+    osdElementConfigMutable()->item_pos[OSD_RSSI_VALUE]         = OSD_PROFILE_MASK | OSD_POS(1, 11);
+    osdElementConfigMutable()->item_pos[OSD_ITEM_TIMER_2]       = OSD_PROFILE_MASK | OSD_POS(1, 10);
+    osdElementConfigMutable()->item_pos[OSD_FLYMODE]            = OSD_PROFILE_MASK | OSD_POS(18,10);
+    osdElementConfigMutable()->item_pos[OSD_VTX_CHANNEL]        = OSD_PROFILE_MASK | OSD_POS(8, 10);
+    osdElementConfigMutable()->item_pos[OSD_CURRENT_DRAW]       = OSD_PROFILE_MASK | OSD_POS(23,11);
+    osdElementConfigMutable()->item_pos[OSD_CRAFT_NAME]         = OSD_PROFILE_MASK | OSD_POS(8 ,11);
+    osdElementConfigMutable()->item_pos[OSD_WARNINGS]           = OSD_PROFILE_MASK | OSD_POS(9, 6);
 
     osdConfigMutable()->displayPortDevice = OSD_DISPLAYPORT_DEVICE_MAX7456;
 
