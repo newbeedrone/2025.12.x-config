@@ -35,6 +35,7 @@
 #define USBD_PRODUCT_STRING             "BeeBrain BRUSHED"
 
 #define USE_ACCGYRO_BMI270
+#define ENABLE_BMI270_ALIGN_AS_ICM 1
 #define USE_ELRSV3
 #define USE_LED_STRIP
 #define USE_RX_SPI

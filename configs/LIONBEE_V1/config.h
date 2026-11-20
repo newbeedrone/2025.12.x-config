@@ -39,6 +39,7 @@
 #define USE_GYRO
 #define USE_GYRO_SPI_ICM42688P
 #define USE_ACCGYRO_BMI270
+// Rotate BMI270 axes by CW270 to preserve the legacy BMI270 board yaw correction.
 #define ENABLE_BMI270_ALIGN_AS_ICM 1
 
 #define USE_ELRSV3
@@ -116,8 +117,6 @@
 #define GYRO_1_SPI_INSTANCE             SPI1
 #define GYRO_1_ALIGN                    CW270_DEG
 #define DEFAULT_ALIGN_BOARD_PITCH       180
-// Rotate BMI270 axes by CW270 to preserve the legacy BMI270 board yaw correction.
-#define ENABLE_BMI270_ALIGN_AS_ICM      1
 #define MAX7456_SPI_INSTANCE            SPI3
 #define RTC6705_SPI_INSTANCE            SPI3
 #define RTC6705_DYNAMIC_POWER_CTRL // For External VTx Power Controller

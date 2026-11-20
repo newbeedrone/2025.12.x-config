@@ -35,6 +35,7 @@
 #define USBD_PRODUCT_STRING             "HBRD RS"
 
 #define USE_ACCGYRO_BMI270
+#define ENABLE_BMI270_ALIGN_AS_ICM 1
 #define USE_RX_SPI
 #define USE_RX_EXPRESSLRS
 #define USE_ELRSV4
