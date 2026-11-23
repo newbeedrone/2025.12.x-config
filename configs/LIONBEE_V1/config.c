@@ -34,6 +34,7 @@
 #include "cli/cli.h"
 
 #include "common/sensor_alignment.h"
+#include "common/utils.h"
 
 #include "config/config_eeprom.h"
 #include "config/feature.h"
@@ -276,7 +277,8 @@ void targetConfiguration(void) {
     schedulerConfigMutable()->cpuLatePercentageLimit = 35;
 
     /* Configuration -> Personalization */
-    strcpy(pilotConfigMutable()->craftName, USBD_PRODUCT_STRING);
+    STATIC_ASSERT(sizeof(STR(BOARD_NAME)) <= sizeof(pilotConfigMutable()->craftName), "Board name exceeds craft name capacity");
+    strcpy(pilotConfigMutable()->craftName, STR(BOARD_NAME));
 
     /* Gyro */
     gyroConfigMutable()->gyro_lpf1_static_hz = 0;

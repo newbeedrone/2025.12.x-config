@@ -34,6 +34,7 @@
 #include "cli/cli.h"
 
 #include "common/sensor_alignment.h"
+#include "common/utils.h"
 
 #include "config/config_eeprom.h"
 #include "config/feature.h"
@@ -251,7 +252,9 @@ void targetConfiguration(void) {
     vcdProfileMutable()->video_system = VIDEO_SYSTEM_NTSC;
 
     /* Configuration -> Personalization */
-    strcpy(pilotConfigMutable()->craftName, USBD_PRODUCT_STRING);
+    static const char defaultCraftName[] = "ACROBEE75_BLV5_B";
+    STATIC_ASSERT(sizeof(defaultCraftName) <= sizeof(pilotConfigMutable()->craftName), "Default craft name exceeds craft name capacity");
+    strcpy(pilotConfigMutable()->craftName, defaultCraftName);
 
     /* PID Tuning -> PID Profile Settings */
     pidProfilesMutable(0)->iterm_relax_cutoff = 45;

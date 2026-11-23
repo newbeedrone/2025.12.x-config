@@ -34,6 +34,7 @@
  #include "cli/cli.h"
  
  #include "common/sensor_alignment.h"
+ #include "common/utils.h"
  
  #include "config/config_eeprom.h"
  #include "config/feature.h"
@@ -247,8 +248,10 @@
      /* OSD -> Video Format */
      vcdProfileMutable()->video_system = VIDEO_SYSTEM_NTSC;
  
-    /* Configuration -> Personalization */
-     strcpy(pilotConfigMutable()->craftName, USBD_PRODUCT_STRING);
+     /* Configuration -> Personalization */
+     static const char defaultCraftName[] = "HMB_F4_V4_75";
+     STATIC_ASSERT(sizeof(defaultCraftName) <= sizeof(pilotConfigMutable()->craftName), "Default craft name exceeds craft name capacity");
+     strcpy(pilotConfigMutable()->craftName, defaultCraftName);
  
      /* Gyro / Filters */
      gyroConfigMutable()->gyro_lpf1_static_hz = 0;

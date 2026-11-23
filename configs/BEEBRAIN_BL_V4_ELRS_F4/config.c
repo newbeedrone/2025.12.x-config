@@ -34,6 +34,7 @@
 #include "cli/cli.h"
 
 #include "common/sensor_alignment.h"
+#include "common/utils.h"
 
 #include "config/config_eeprom.h"
 #include "config/feature.h"
@@ -248,7 +249,9 @@ void targetConfiguration(void) {
     systemConfigMutable()->cpu_overclock = 2;
 
     /* Configuration -> Personalization */
-    strcpy(pilotConfigMutable()->craftName, USBD_PRODUCT_STRING);
+    static const char defaultCraftName[] = "BLV4_ELRS_F4";
+    STATIC_ASSERT(sizeof(defaultCraftName) <= sizeof(pilotConfigMutable()->craftName), "Default craft name exceeds craft name capacity");
+    strcpy(pilotConfigMutable()->craftName, defaultCraftName);
     strcpy(pilotConfigMutable()->pilotName, "NBD BLV4 ELRS F4");
 }
 #endif

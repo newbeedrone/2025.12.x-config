@@ -14,6 +14,7 @@
 #include "cli/cli.h"
 
 #include "common/sensor_alignment.h"
+#include "common/utils.h"
 
 #include "config/config_eeprom.h"
 #include "config/feature.h"
@@ -237,7 +238,9 @@ void targetConfiguration(void) {
     vcdProfileMutable()->video_system = VIDEO_SYSTEM_NTSC;
 
     /* Configuration -> Personalization */
-    strcpy(pilotConfigMutable()->craftName, USBD_PRODUCT_STRING);
+    static const char defaultCraftName[] = "BRUSHED_V2_ELRS";
+    STATIC_ASSERT(sizeof(defaultCraftName) <= sizeof(pilotConfigMutable()->craftName), "Default craft name exceeds craft name capacity");
+    strcpy(pilotConfigMutable()->craftName, defaultCraftName);
 
     /* Configuration -> Ws2811strip */
     ledStripStatusModeConfigMutable()->ledConfigs[0] = DEFINE_LED( 7, 7,  8, 0, LF(COLOR), LO(LARSON_SCANNER) | LO(THROTTLE));
