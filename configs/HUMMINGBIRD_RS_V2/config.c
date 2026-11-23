@@ -104,8 +104,9 @@ void targetConfiguration(void) {
     /* Configuration -> Other Features */
     featureConfigMutable()->enabledFeatures |= (FEATURE_SERVO_TILT | FEATURE_TELEMETRY | FEATURE_OSD | FEATURE_CHANNEL_FORWARDING | FEATURE_LED_STRIP | FEATURE_RANGEFINDER);
 
-    /* Configuration -> Dshot Beacon Configuration */
-    beeperConfigMutable()->dshotBeaconOffFlags = BEEPER_SILENCE;
+    /* Configuration -> Beeper and DShot Beacon */
+    beeperConfigMutable()->beeper_off_flags = BEEPER_ALLOWED_MODES & ~BEEPER_GET_FLAG(BEEPER_MULTI_BEEPS);
+    beeperConfigMutable()->dshotBeaconOffFlags = DSHOT_BEACON_ALLOWED_MODES;
 
     /* Modes */
     modeActivationConditionsMutable(0)->modeId          = BOXARM;
