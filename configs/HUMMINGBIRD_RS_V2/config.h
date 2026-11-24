@@ -31,6 +31,7 @@
 
 #define BOARD_NAME        HMB RS V2
 #define MANUFACTURER_ID   HBRD
+#define USBD_PRODUCT_STRING "HMB RS V2"
 
 #define USE_ACC
 #define USE_ACC_SPI_ICM42688P
