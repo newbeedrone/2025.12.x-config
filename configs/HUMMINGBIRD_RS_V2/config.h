@@ -29,7 +29,7 @@
 
 #define FC_TARGET_MCU     AT32F435G
 
-#define BOARD_NAME        HMB_RS_V2
+#define BOARD_NAME        HMB RS V2
 #define MANUFACTURER_ID   HBRD
 
 #define USE_ACC
